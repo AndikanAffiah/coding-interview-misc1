@@ -11,23 +11,38 @@
  *
  * The ordering of the push operations must be kept.
  */
-export class RingBuffer<T> {
+ export class RingBuffer<T> {
 
+    private _capacity: number = 0;
+    private _buffer: T[];
+    
     constructor(capacity: number) {
+        this._capacity = capacity;
+        this._buffer = [];
     }
 
     public push(value: T) {
-
+        if (this._buffer.length === this._capacity){
+            this._buffer.push(value)
+            this._buffer.shift()
+            return 
+        }
+        return this._buffer.push(value);
     }
 
     public peek(): T | undefined {
-        // not implemented
+        if (this._buffer.length > 0) {
+            return this._buffer[this._buffer.length - 1]
+        }
         return undefined;
     }
 
     public pop(): T | undefined {
-        // not implemented
+        if (this._buffer.length > 0) {
+            return this._buffer.pop();
+        }
         return undefined;
     }
 
 }
+

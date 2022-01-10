@@ -24,8 +24,29 @@ export namespace TextMergeJoin {
     /**
      *
      */
-    export function doMergeWords(data: ReadonlyArray<IPDFTextWord>): ReadonlyArray<IPDFTextWord> {
-        return [];
+     export function doMergeWords(data: ReadonlyArray<IPDFTextWord>): ReadonlyArray<IPDFTextWord> {
+        const new_array: IPDFTextWord[] = []
+
+        for(let i = 0; i < data.length; i++) {
+            if ( i > 0 ) {
+                if (Math.abs(data[i-1].width + data[i-1].x - data[i].x) < 1) {
+                    new_array[new_array.length - 1] = {
+                        pageNum: data[i-1].pageNum,
+                        x: data[i-1].x,
+                        y: data[i-1].y,
+                        str: data[i-1].str + data[i].str,
+                        width: data[i-1].width + data[i].width,
+                        height: data[i-1].height,
+                    }
+                }else{
+                    new_array.push(data[i])
+                }
+            }else{
+                new_array.push(data[i])
+            }
+        }
+
+        return new_array;
     }
 
 }

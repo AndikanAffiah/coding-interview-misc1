@@ -31,10 +31,24 @@ export namespace DeepCopy {
      * - If you are given an object as input it should return an object as output.
      *
      */
+     function _deepCopy(source: any): any {
+        if(typeof source == 'object'){
+            if(source instanceof Set) {
+                return new Set(...Array.from(source))
+            }
+            if(source instanceof Map) {
+                return new Map(...Array.from(source))
+            }
+            if(Array.isArray(source)) {
+                return [...source]
+            }
+        }
+        return JSON.parse(JSON.stringify(source));
+    }
     export function deepCopy<T extends any>(source: T): T {
 
         // TODO: implement this function from the above function definition.
-        return {} as T;
+        return _deepCopy(source) as T;
     }
 
 }
